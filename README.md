@@ -27,7 +27,7 @@ The Software Development Life Cycle (SDLC) consists of several stages or phases 
 
 ## <a id="what-is-cicd">What is CI/CD?</a>
 
-CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications. CI/CD workflows are known as **pipelines**.
+CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications. CI/CD workflows are known as **pipelines**. It is the **backbone of DevOps**.
 
 **Continuous Integration (CI)** refers to the practice of frequently integrating code changes from multiple developers into a shared repository.
 
@@ -51,12 +51,14 @@ CI/CDE is Continuous Integration and **Continuous Deployment (CDE)** rather than
 - Continuous Feedback and Collaboration
 - Greater Deployment Stability
 - Scalability and Agility
+- To release software more efficiently
+- save time and money with automation (scripting)
 
 ## <a id="what-is-jenkins">What is Jenkins?</a>
 
 Jenkins is an open-source automation server that facilitates continuous integration (CI) and continuous delivery (CD) of software projects. It helps automate the build, test, and deployment processes, allowing teams to rapidly and reliably deliver software applications.
 
-Jenkins is built with Java and requires latest (or a specific) version of Java to run. It listens at default port 8080.
+Jenkins is built with Java and requires latest (or a specific) version of Java to run. It listens at default port 8080. It integrates with AWS.
 
 ### <a id="what-are-the-stages-of-a-jenkins-pipeline">What are the stages of a Jenkins pipeline?</a>
 
@@ -64,7 +66,7 @@ In Jenkins, a job represents a specific task or workflow that needs to be execut
 
 ![Jenkins stages](/images/jenkins-stages.png)
 
-1. An **SSH connection** must be established between **GitHub** and **Jenkins** so Jenkins can copy the updated code from GitHub automatically using a **Webhook Trigger**.
+1. An **SSH connection** must be established between **GitHub** and **Jenkins** so Jenkins can copy the updated code from GitHub automatically using a **Webhook Trigger**. This connection must be between Jenkins and a centralised GitHub repo (which allows for **continuous integratation** of different parts of projects, but **before merging** it **must be tested** (manual or automated)).
 2. When the webhook is triggered, the code that Jenkins copies from GitHub undergoes automated testing which is taken care of by the **Agent Node**. If the tests are successful, the **Master Node** that is orchestrating this process will continuously deliver that code to the staging area or immediately deploy it to Production, in this case on AWS, depending on the CI/CD configuration.
 3. If any tests fail, the **Agent Node** sends feedback back to the **developers via GitHub** so they can update the code for the next iteration.
 
