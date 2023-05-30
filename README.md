@@ -2,10 +2,12 @@
 
 - [CICD with Jenkins](#cicd-with-jenkins)
     - [SDLC - The Software Development Life Cycle](#sdlc---the-software-development-life-cycle)
-    - [What is CI/CD?](#what-is-cicd)
+  - [What is CI/CD?](#what-is-cicd)
     - [How is CI/CDE different?](#how-is-cicde-different)
-    - [What is Jenkins?](#what-is-jenkins)
+    - [Benefits of CI/CD](#benefits-of-cicd)
+  - [What is Jenkins?](#what-is-jenkins)
     - [What are the stages of a Jenkins pipeline?](#what-are-the-stages-of-a-jenkins-pipeline)
+    - [Agent node vs Master node](#agent-node-vs-master-node)
     - [What other tools are available?](#what-other-tools-are-available)
   - [Set up Jenkins-GitHub automation test](#set-up-jenkins-github-automation-test)
     - [Create a Jenkins SSH key:](#create-a-jenkins-ssh-key)
@@ -17,15 +19,15 @@ The Software Development Life Cycle (SDLC) consists of several stages or phases 
 
 ![Basic SDLC](/images/basic-sdlc.png)
 
-- Plan: This phase is used to gather and analyse requirements for the project, then break down the requirements into managable tasks, estimate the effort required and create a schedule.
-- Design: This phase is used to create system architecture; design software components or modules; define data structures, algorithms, interfaces, other system specifications; user interface design (optional).
-- Develop: The actual coding or programming of the software is done in this stage.
-- Test: This stage is where the software undergoes various levels of testing to identify defects and ensure quality. The test cases are executed and issues are reported and fixed.
-- Deploy: Once software has successfully passed the testing phase it is deployed to the target or production environment where users can access it. This phase also involves maintenance, monitoring, addressing user feedback and resolving issues that arise.
+- **Plan**: This phase is used to gather and analyse requirements for the project, then break down the requirements into managable tasks, estimate the effort required and create a schedule.
+- **Design**: This phase is used to create system architecture; design software components or modules; define data structures, algorithms, interfaces, other system specifications; user interface design (optional).
+- **Develop**: The actual coding or programming of the software is done in this stage.
+- **Test**: This stage is where the software undergoes various levels of testing to identify defects and ensure quality. The test cases are executed and issues are reported and fixed.
+- **Deploy**: Once software has successfully passed the testing phase it is deployed to the target or production environment where users can access it. This phase also involves maintenance, monitoring, addressing user feedback and resolving issues that arise.
 
-### <a id="what-is-cicd">What is CI/CD?</a>
+## <a id="what-is-cicd">What is CI/CD?</a>
 
-CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications.
+CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications. CI/CD workflows are known as **pipelines**.
 
 **Continuous Integration (CI)** refers to the practice of frequently integrating code changes from multiple developers into a shared repository.
 
@@ -34,22 +36,37 @@ CD helps streamline the release process, reduce manual errors, and enable faster
 
 ### <a id="how-is-cicde-different">How is CI/CDE different?</a>
 
-CI/CD: Continuous Integration and Continuous Delivery (or Continuous Deployment)
-CI/CDE: Continuous Integration, Continuous Delivery, and Continuous Deployment
+![CI/CD vs CI/CDE](https://www.softwaretestinghelp.com/wp-content/qa/uploads/2019/09/Difference.png)
 
 CI/CDE is Continuous Integration and **Continuous Deployment (CDE)** rather than just Continuous Delivery.
 
 **Continuous Deployment (CDE)** refers to automatically deploying the application (product) to production (i.e. to users) after passing all the necessary tests and quality checks (done in the CD stage).
 
-### <a id="what-is-jenkins">What is Jenkins?</a>
+### <a id="benefits-of-cicd">Benefits of CI/CD</a>
+
+- Faster Time to Market
+- Early Bug Detection
+- Increased Developer Productivity
+- Higher Software Quality
+- Continuous Feedback and Collaboration
+- Greater Deployment Stability
+- Scalability and Agility
+
+## <a id="what-is-jenkins">What is Jenkins?</a>
 
 Jenkins is an open-source automation server that facilitates continuous integration (CI) and continuous delivery (CD) of software projects. It helps automate the build, test, and deployment processes, allowing teams to rapidly and reliably deliver software applications.
+
+Jenkins is built with Java and requires latest (or a specific) version of Java to run. It listens at default port 8080.
 
 ### <a id="what-are-the-stages-of-a-jenkins-pipeline">What are the stages of a Jenkins pipeline?</a>
 
 In Jenkins, a job represents a specific task or workflow that needs to be executed. Jobs are composed of stages, which are the logical divisions of the overall process. Each stage represents a specific phase or step in the software delivery pipeline. Stages are used to break down complex tasks into smaller, more manageable units.
 
 ![Jenkins stages](/images/jenkins-stages.png)
+
+1. An **SSH connection** must be established between **GitHub** and **Jenkins** so Jenkins can copy the updated code from GitHub automatically using a **Webhook Trigger**.
+2. When the webhook is triggered, the code that Jenkins copies from GitHub undergoes automated testing which is taken care of by the **Agent Node**. If the tests are successful, the **Master Node** that is orchestrating this process will continuously deliver that code to the staging area or immediately deploy it to Production, in this case on AWS, depending on the CI/CD configuration.
+3. If any tests fail, the **Agent Node** sends feedback back to the **developers via GitHub** so they can update the code for the next iteration.
 
 Typically, a CI/CD pipeline in Jenkins consists of the following stages:
 
@@ -70,6 +87,14 @@ Verify: After the deployment, this stage typically involves running additional t
 Release: The release stage is responsible for promoting the application to the final production environment. It involves finalizing any necessary configurations, updating version numbers, and making the application available to end-users.
 
 [Jenkins documentation - Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
+
+### <a id="agent-node-vs-master-node">Agent node vs Master node</a>
+
+The **Master node** in Jenkins is the central coordination point of the Jenkins environment. It manages the system, schedules and coordinates jobs, and provides the web interface for managing Jenkins and viewing build results.
+
+The **Agent node(s)** are additional machines or virtual environments that are connected to the Jenkins Master node. These nodes handle the actual build and testing tasks, separating them from the Master node to avoid resource conflicts.
+
+Together, the Master node and the Agent node(s), form the foundation for Jenkins' distributed build capabilities and enhance the scalability and flexibility of the CI/CD pipeline.
 
 ### <a id="what-other-tools-are-available">What other tools are available?</a>
 
@@ -150,13 +175,19 @@ Some popular ones include:
    npm install
    npm test
    ```
-   This specific testing will run 3 tests
+   This specific testing will run 3 tests. (To check the time your system is running from use the `date` command. To check the OS of your system use the `uname -a` command.)
+
+   (Note: You may use 'Post-build actions' to run another build on successful completion of current build by selecting the 'Add post-build action' drop down and selecting 'Build other projects' then specifying the name of the project in the 'Projects to build' box.)
    10. Click 'Save' at the bottom of the screen.
    11. Run the testing manually by clicking 'Build Now' from the page of your Jenkins project. Alternatively you can push to your GitHub repo and allow your automation webhook to run the tests. This will spin up the necessary EC2 instances to complete the testing and will return the outcomes in the 'Console Output' under your 'Build History' in Jenkins under your project. The Console Output should display the following/similar if it was successful:
 
    ![Console Output1](/images/console_output1.png)
    ![Console Output2](/images/console_output2.png)
    ![Console Output3](/images/console_output3.png)
+
+Note: You can see what resources Jenkins copies over under the project's 'Workspace'.
+
+Additional Note: To check what triggered the build to run if we click 'Polling Log' to see the build log.
 
 [More documentation on SSH](https://github.com/EstherSlabbert/tech230_github_ssh/blob/main/README.md)
 
@@ -176,6 +207,8 @@ Some popular ones include:
 A webhook is a mechanism that allows two applications or systems to communicate with each other in a real-time or near real-time manner. It is a way for one application to send a notification or trigger an action in another application when a specific event occurs.
 
 Webhooks are commonly used for integrating and automating processes between different systems or services. Like between GitHub and Jenkins.
+
+Webhook endpoints can be understood as URLs or web addresses that receive data from other applications or systems. They act as a destination where data is sent when a specific event or trigger occurs in the sending application.
 
 Follow the steps outlined in step 3 [here](#set-up-jenkins-github-automation-test)
 
