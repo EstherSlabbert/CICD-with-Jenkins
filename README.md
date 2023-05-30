@@ -1,10 +1,30 @@
 # CICD with Jenkins
 
-## What is Jenkins?
+## Table of Contents
+
+### SDLC - The Software Development Life Cycle
+
+
+
+### What is CI/CD?
+
+CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications.
+
+**Continuous Integration (CI)** refers to the practice of frequently integrating code changes from multiple developers into a shared repository.
+
+**Continuous Delivery (CD)** extends the concept of CI by automating the entire release process, from building and testing to deployment.
+
+### What is CI/CDE and how is it different?
+
+CI/CDE includes **Continuous Deployment (CDE)** in CI/CD.
+
+**Continuous Deployment (CDE)** refers to automatically deploying the application to production after passing all the necessary tests and quality checks.
+
+### What is Jenkins?
 
 Jenkins is an open-source automation server that facilitates continuous integration (CI) and continuous delivery (CD) of software projects. It helps automate the build, test, and deployment processes, allowing teams to rapidly and reliably deliver software applications.
 
-## What are the stages of Jenkins?
+### What are the stages of Jenkins?
 
 In Jenkins, a job represents a specific task or workflow that needs to be executed. Jobs are composed of stages, which are the logical divisions of the overall process. Each stage represents a specific phase or step in the software delivery pipeline. Stages are used to break down complex tasks into smaller, more manageable units.
 
@@ -30,7 +50,7 @@ Release: The release stage is responsible for promoting the application to the f
 
 [Jenkins documentation - Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
 
-## What other tools are available?
+### What other tools are available?
 
 There are several alternative tools available that can be used for similar purposes as Jenkins.
 
@@ -42,3 +62,7 @@ Some popular ones include:
 - Bamboo (from Atlassian)
 - Azure DevOps
 - TeamCity (by JetBrains)
+
+## Webhooks
+
+[Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
