@@ -113,11 +113,14 @@ Some popular ones include:
 
 1. Create SSH key pair on your device:
    1. Open a terminal on your device and in the terminal use `cd ~/.ssh` to navigate to the hidden .ssh folder.
+
    2. Generate a Key Pair: Use `ssh-keygen -t rsa -b 4096 -C "git_hub_email_address@gmail.com` and replace the email with your GitHub one.
+
    3. Follow the instructions in your terminal to `Enter file in which to save the key (/c/Users/Name/.ssh/id_rsa):` as `name-jenkins` (name of key) or similar and `Enter`. Then `Enter a passphrase:` and enter it again.
 
 2. Link SSH key pair to GitHub repo:
    1. To get the public key to put into your GitHub repo use `cat name-jenkins.pub` (replace with name of key) in your terminal. Select what is returned in the terminal and copy it. (*Note: you must navigate to the .ssh folder in your terminal*)
+
    2. On GitHub in your web browser go to the repository you desire to link with Jenkins. Navigate to 'Settings' > 'Deploy keys' then click on 'Add deploy key'.
    
    ![Add deploy key](/images/GitHub_public_ssh.png)
@@ -126,7 +129,9 @@ Some popular ones include:
 
 3. Create a webhook on GitHub:
    1. Navigate to your GitHub repo > 'Settings' > 'Webhooks'. Click 'Add webhook'.
+
    2. In the 'Payroll URL' enter your Jenkins url followed by `/github-webhook/`.
+
    3. Select `application/json` as the 'Content Type'.
 
    ![Add webhook](/images/jenkins-github-webhook1.png)
@@ -144,6 +149,7 @@ Some popular ones include:
 
 4. Create a project on Jenkins:
    1. Navigate to Jenkins in your web browser and log in.
+
    2. Click on 'New item'. 
    
    ![Jenkins new item](/images/new-item.png)
@@ -157,6 +163,7 @@ Some popular ones include:
    ![Jenkins](/images/GitHub_project_url_https.png)
 
    5. Change the configurations under the 'Office 365 Connector' block and check 'Restrict where this project can be run'. Then add `sparta-ubuntu-node` in the 'Label Expression' box.
+
    6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/main`).
    
    ![Jenkins Source Code Management](/images/Git_SourceCode_ssh.png)
@@ -178,7 +185,9 @@ Some popular ones include:
    This specific testing will run 3 tests. (To check the time your system is running from use the `date` command. To check the OS of your system use the `uname -a` command.)
 
    (Note: You may use 'Post-build actions' to run another build on successful completion of current build by selecting the 'Add post-build action' drop down and selecting 'Build other projects' then specifying the name of the project in the 'Projects to build' box.)
+
    10. Click 'Save' at the bottom of the screen.
+
    11. Run the testing manually by clicking 'Build Now' from the page of your Jenkins project. Alternatively you can push to your GitHub repo and allow your automation webhook to run the tests. This will spin up the necessary EC2 instances to complete the testing and will return the outcomes in the 'Console Output' under your 'Build History' in Jenkins under your project. The Console Output should display the following/similar if it was successful:
 
    ![Console Output1](/images/console_output1.png)
@@ -194,8 +203,11 @@ Additional Note: To check what triggered the build to run if we click 'Polling L
 ### <a id="create-a-jenkins-ssh-key">Create a Jenkins SSH key:</a>
 
 1. Navigate to the correct place (skip this step if you are in the configuration settings already). Find your Jenkins project and click on it, then navigate to edit the configuration settings by clicking 'Configure' on the side bar.
+
 2. Navigate to the 'Source Code Management' block and select 'Git'. Click the 'Add' drop down next to  'Credentials' and click 'Jenkins'. This will take you to the 'Add Credentials' page.
+
 3. On the 'Add Credentials' page click the 'Kind' drop down and select 'SSH Username with private key'. Name your key under 'Username'. You may choose to give it a description (optional). 'ID' you can leave blank as it is not essential.
+
 4. Select 'Enter directly' under 'Private Key', then click 'Add'. This should allow you to paste in your private key to match the GitHub public key stored in your .ssh folder. To get the private key to put into your Jenkins configurations use `cat name-jenkins` (replace with name of key) in your terminal. Select everything returned in the terminal and copy it. (*Note: you must navigate to the .ssh folder in your terminal*) You may also choose to add a passphrase (optional).
 
 ![Add SSH private key to Jenkins](/images/add-private-key-ssh-jenkins.png)
