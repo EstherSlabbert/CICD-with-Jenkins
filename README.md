@@ -28,6 +28,8 @@ Verify: After the deployment, this stage typically involves running additional t
 
 Release: The release stage is responsible for promoting the application to the final production environment. It involves finalizing any necessary configurations, updating version numbers, and making the application available to end-users.
 
+[Jenkins documentation - Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
+
 ## What other tools are available?
 
 There are several alternative tools available that can be used for similar purposes as Jenkins.
