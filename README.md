@@ -1,12 +1,19 @@
 # CICD with Jenkins
 
-## Table of Contents
+- [CICD with Jenkins](#cicd-with-jenkins)
+    - [SDLC - The Software Development Life Cycle](#sdlc---the-software-development-life-cycle)
+    - [What is CI/CD?](#what-is-cicd)
+    - [What is CI/CDE and how is it different?](#what-is-cicde-and-how-is-it-different)
+    - [What is Jenkins?](#what-is-jenkins)
+    - [What are the stages of Jenkins?](#what-are-the-stages-of-jenkins)
+    - [What other tools are available?](#what-other-tools-are-available)
+  - [Webhooks](#webhooks)
 
-### SDLC - The Software Development Life Cycle
+### <a id="sdlc-the-software-development-life-cycle">SDLC - The Software Development Life Cycle</a>
 
 
 
-### What is CI/CD?
+### <a id="what-is-cicd">What is CI/CD?</a>
 
 CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous Deployment). It is a software development approach that emphasizes automating the process of building, testing, and deploying applications.
 
@@ -14,17 +21,17 @@ CI/CD stands for Continuous Integration and Continuous Delivery (or Continuous D
 
 **Continuous Delivery (CD)** extends the concept of CI by automating the entire release process, from building and testing to deployment.
 
-### What is CI/CDE and how is it different?
+### <a id="what-is-cicde-and-how-is-it-different">What is CI/CDE and how is it different?</a>
 
 CI/CDE includes **Continuous Deployment (CDE)** in CI/CD.
 
 **Continuous Deployment (CDE)** refers to automatically deploying the application to production after passing all the necessary tests and quality checks.
 
-### What is Jenkins?
+### <a id="what-is-jenkins">What is Jenkins?</a>
 
 Jenkins is an open-source automation server that facilitates continuous integration (CI) and continuous delivery (CD) of software projects. It helps automate the build, test, and deployment processes, allowing teams to rapidly and reliably deliver software applications.
 
-### What are the stages of Jenkins?
+### <a id="what-are-the-stages-of-jenkins">What are the stages of Jenkins?</a>
 
 In Jenkins, a job represents a specific task or workflow that needs to be executed. Jobs are composed of stages, which are the logical divisions of the overall process. Each stage represents a specific phase or step in the software delivery pipeline. Stages are used to break down complex tasks into smaller, more manageable units.
 
@@ -50,7 +57,7 @@ Release: The release stage is responsible for promoting the application to the f
 
 [Jenkins documentation - Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/)
 
-### What other tools are available?
+### <a id="what-other-tools-are-available">What other tools are available?</a>
 
 There are several alternative tools available that can be used for similar purposes as Jenkins.
 
@@ -63,6 +70,6 @@ Some popular ones include:
 - Azure DevOps
 - TeamCity (by JetBrains)
 
-## Webhooks
+## <a id="webhooks">Webhooks</a>
 
 [Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
