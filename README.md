@@ -242,5 +242,3 @@ Additional Note: To check what triggered the build to run if we click 'Polling L
 ## <a id="set-up-jenkins-github-merge">Set up Jenkins-GitHub merge</a>
 
 [Git merge on Jenkins steps](https://andrewtarry.com/posts/jenkins_git_merges/)
-
-JenkinsTest2
