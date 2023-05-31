@@ -9,10 +9,11 @@
     - [What are the stages of a Jenkins pipeline?](#what-are-the-stages-of-a-jenkins-pipeline)
     - [Agent node vs Master node](#agent-node-vs-master-node)
     - [What other tools are available?](#what-other-tools-are-available)
-    - [Stopping Jenkins Job on AWS](#stopping-jenkins-job-on-aws)
+  - [Webhooks](#webhooks)
+    - [Stopping Jenkins on AWS](#stopping-jenkins-on-aws)
   - [Set up Jenkins-GitHub automation test](#set-up-jenkins-github-automation-test)
     - [Create a Jenkins SSH key:](#create-a-jenkins-ssh-key)
-  - [Webhooks](#webhooks)
+  - [Set up Jenkins-GitHub merge](#set-up-jenkins-github-merge)
 
 ### <a id="sdlc-the-software-development-life-cycle">SDLC - The Software Development Life Cycle</a>
 
@@ -112,7 +113,22 @@ Some popular ones include:
 - Azure DevOps
 - TeamCity (by JetBrains)
 
-### <a id="stopping-jenkins-job-on-aws">Stopping Jenkins Job on AWS</a>
+## <a id="webhooks">Webhooks</a>
+
+A webhook is a mechanism that allows two applications or systems to communicate with each other in a real-time or near real-time manner. It is a way for one application to send a notification or trigger an action in another application when a specific event occurs.
+
+Webhooks are commonly used for integrating and automating processes between different systems or services. Like between GitHub and Jenkins.
+
+Webhook endpoints can be understood as URLs or web addresses that receive data from other applications or systems. They act as a destination where data is sent when a specific event or trigger occurs in the sending application.
+
+You can see the actions taken by the webhooks on GitHub 'Manage webhook', 'Recent Deliveries'.
+
+Follow the steps outlined in step 3 [here](#set-up-jenkins-github-automation-test)
+
+Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
+[Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
+
+### <a id="stopping-jenkins-on-aws">Stopping Jenkins on AWS</a>
 
 If you stop the EC2 instance for Jenkins you need to get the new Public IP for your webhook. (It will not trigger and will show the errors on GitHub by your webhook if the EC2 instance for Jenkins is stopped or terminated.) If the webhook IP for Jenkins is correct and running then it will have a check mark next to it on GitHub. I finactive it will have a grey dot next to it.
 
@@ -223,17 +239,6 @@ Additional Note: To check what triggered the build to run if we click 'Polling L
 
 5. Then click 'Add' at the bottom of your page to add the new SSH credentials so they can be used.
 
-## <a id="webhooks">Webhooks</a>
+## <a id="set-up-jenkins-github-merge">Set up Jenkins-GitHub merge</a>
 
-A webhook is a mechanism that allows two applications or systems to communicate with each other in a real-time or near real-time manner. It is a way for one application to send a notification or trigger an action in another application when a specific event occurs.
-
-Webhooks are commonly used for integrating and automating processes between different systems or services. Like between GitHub and Jenkins.
-
-Webhook endpoints can be understood as URLs or web addresses that receive data from other applications or systems. They act as a destination where data is sent when a specific event or trigger occurs in the sending application.
-
-You can see the actions taken by the webhooks on GitHub 'Manage webhook', 'Recent Deliveries'.
-
-Follow the steps outlined in step 3 [here](#set-up-jenkins-github-automation-test)
-
-Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
-[Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
+[Git merge on Jenkins steps](https://andrewtarry.com/posts/jenkins_git_merges/)
