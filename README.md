@@ -243,4 +243,4 @@ Additional Note: To check what triggered the build to run if we click 'Polling L
 
 [Git merge on Jenkins steps](https://andrewtarry.com/posts/jenkins_git_merges/)
 
-Alternatively use post-build actions.
+Alternatively use post-build actions to merge.
