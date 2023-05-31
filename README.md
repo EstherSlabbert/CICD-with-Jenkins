@@ -9,6 +9,7 @@
     - [What are the stages of a Jenkins pipeline?](#what-are-the-stages-of-a-jenkins-pipeline)
     - [Agent node vs Master node](#agent-node-vs-master-node)
     - [What other tools are available?](#what-other-tools-are-available)
+    - [Stopping Jenkins Job on AWS](#stopping-jenkins-job-on-aws)
   - [Set up Jenkins-GitHub automation test](#set-up-jenkins-github-automation-test)
     - [Create a Jenkins SSH key:](#create-a-jenkins-ssh-key)
   - [Webhooks](#webhooks)
@@ -111,9 +112,11 @@ Some popular ones include:
 - Azure DevOps
 - TeamCity (by JetBrains)
 
-<a id="stopping-jenkins-job-on-aws">Stopping Jenkins Job on AWS</a>
+### <a id="stopping-jenkins-job-on-aws">Stopping Jenkins Job on AWS</a>
 
-If you stop the EC2 instance you need to get the new Public IP for your webhook.
+If you stop the EC2 instance for Jenkins you need to get the new Public IP for your webhook. (It will not trigger and will show the errors on GitHub by your webhook if the EC2 instance for Jenkins is stopped or terminated.) If the webhook IP for Jenkins is correct and running then it will have a check mark next to it on GitHub. I finactive it will have a grey dot next to it.
+
+You need both endpoints available and correct for the webhook to trigger the jobs.
 
 ## <a id="set-up-jenkins-github-automation-test">Set up Jenkins-GitHub automation test</a>
 
