@@ -111,6 +111,10 @@ Some popular ones include:
 - Azure DevOps
 - TeamCity (by JetBrains)
 
+<a id="stopping-jenkins-job-on-aws">Stopping Jenkins Job on AWS</a>
+
+If you stop the EC2 instance you need to get the new Public IP for your webhook.
+
 ## <a id="set-up-jenkins-github-automation-test">Set up Jenkins-GitHub automation test</a>
 
 1. Create SSH key pair on your device:
