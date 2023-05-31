@@ -148,16 +148,18 @@ You need both endpoints available and correct for the webhook to trigger the job
 Create SSH key pair on your device:
 1. Open a terminal on your device and in the terminal use `cd ~/.ssh` to navigate to the hidden .ssh folder.
 
-2. Generate a Key Pair: Use `ssh-keygen -t rsa -b 4096 -C "git_hub_email_address@gmail.com` and replace the email with your GitHub one.
+2. Generate a Key Pair: Use `ssh-keygen -t rsa -b 4096 -C "git_hub_email_address@gmail.com"` and replace the email with your GitHub one.
 
 3. Follow the instructions in your terminal to `Enter file in which to save the key (/c/Users/Name/.ssh/id_rsa):` as `name-jenkins` (name of key) or similar and `Enter`. Then `Enter a passphrase:` and enter it again.
+
+[More documentation on creating SSH keys](https://github.com/EstherSlabbert/tech230_github_ssh/blob/main/README.md)
 
 ## <a id="link-ssh-key-to-github">2. Link SSH key to GitHub</a>
 
 Link SSH key pair to GitHub repo:
 1. To get the public key to put into your GitHub repo use `cat name-jenkins.pub` (replace with name of key) in your terminal. Select what is returned in the terminal and copy it. (*Note: you must navigate to the .ssh folder in your terminal*)
 
-2. On GitHub in your web browser go to the repository you desire to link with Jenkins. Navigate to 'Settings' > 'Deploy keys' then click on 'Add deploy key'.
+2. On GitHub in your web browser go to the repository you desire to link with Jenkins. Navigate to 'Settings' > 'Deploy keys' then click on 'Add deploy key'. Ensure you check the box to allow write permissions.
    
 ![Add deploy key](/images/GitHub_public_ssh.png)
    
@@ -168,7 +170,7 @@ Link SSH key pair to GitHub repo:
 Create a webhook on GitHub:
 1. Navigate to your GitHub repo > 'Settings' > 'Webhooks'. Click 'Add webhook'.
 
-2. In the 'Payroll URL' enter your Jenkins url followed by `/github-webhook/`.
+2. In the 'Payroll URL' enter your Jenkins url followed by `/github-webhook/` (e.g. `http://3.8.6.44:8080/github-webhook/`).
 
 3. Select `application/json` as the 'Content Type'.
 
@@ -179,7 +181,7 @@ Create a webhook on GitHub:
 ![Webhook trigger1](/images/jenkins-github-webhook2.png)
 ![Webhook trigger2](/images/jenkins-github-webhook3.png)
 
-5. Ensure 'Active' is checked.
+1. Ensure 'Active' is checked.
 
 ![Active webhook](/images/jenkins-github-webhook4.png)
 
@@ -207,7 +209,7 @@ Create a project for CI job on Jenkins:
 
 ![Jenkins Office 365 Connector](/images/ci-office-365.png)
 
-6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/dev`).
+6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to add one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/dev`).
    
 ![Jenkins Source Code Management](/images/updated-ci-source-code-management.png)
    
@@ -227,7 +229,7 @@ npm test
 ```
 This specific testing will run 3 tests. (To check the time your system is running from use the `date` command. To check the OS of your system use the `uname -a` command.)
 
-(Note: You may use 'Post-build actions' to run another build on successful completion of current build by selecting the 'Add post-build action' drop down and selecting 'Build other projects' then specifying the name of the project in the 'Projects to build' box.)
+(Note: For any job you may use 'Post-build actions' to run another build on successful completion of current build by selecting the 'Add post-build action' drop down and selecting 'Build other projects' then specifying the name of the project in the 'Projects to build' box.)
 
 10. Click 'Save' at the bottom of the screen.
 
@@ -237,7 +239,7 @@ This specific testing will run 3 tests. (To check the time your system is runnin
 ![Console Output2](/images/console_output2.png)
 ![Console Output3](/images/console_output3.png)
 
-Note: You can see what resources Jenkins copies over under the project's 'Workspace'.
+Note: You can see what resources Jenkins copies over under the project's 'Workspace'. And clicking 'Build Now' will manually run any Jenkins job.
 
 Additional Note: To check what triggered the build to run if we click 'Polling Log' to see the build log.
 
@@ -246,8 +248,6 @@ Additional Note: To check what triggered the build to run if we click 'Polling L
 ![Post Build Automating Merge Job](/images/ci-post-build.png)
 
 13. Save the configurations.
-
-[More documentation on SSH](https://github.com/EstherSlabbert/tech230_github_ssh/blob/main/README.md)
 
 ### <a id="create-a-jenkins-ssh-key">Create/Add a Jenkins SSH key:</a>
 
@@ -293,13 +293,17 @@ Create a Merge job on Jenkins:
 
 ![Build Environment config Merge](/images/jenkins-ci-merge4.png)
 
-9. Save the configurations.
-
-10. After setting up your CD job you need to add the CD job to this Merge job in your 'Post-build Actions' by clicking on the 'Add post-build action' dropdown and selecting 'Build other Projects' and then adding the name of the CD job in the 'Projects to build' box and ensuring that only 'Trigger only if build is stable' is selected.
+9. Change the configurations under the 'Post-build Actions' section by clicking on the 'Add post-build action' dropdown and selecting 'Git Publisher'. Check 'Push Only If Build Succeeds', then click 'Add Branch' in 'Branches' section and type `main` in the 'Branch to push' box and `origin` in the Target remote name box.
 
 ![Post-build Actions config Merge](/images/jenkins-ci-merge5.png)
 
-11. Save the configurations.
+10. Save the configurations. Test them.
+
+11. After setting up your CD job you need to add the CD job to this Merge job in your 'Post-build Actions' by clicking on the 'Add post-build action' dropdown and selecting 'Build other Projects' and then adding the name of the CD job in the 'Projects to build' box and ensuring that only 'Trigger only if build is stable' is selected.
+
+![Post-build Actions config Merge add CD job](/images/merge-post-build-cd-job.png)
+
+12. Save the configurations.
 
 [Link to steps for merge on Jenkins](https://andrewtarry.com/posts/jenkins_git_merges/)
 
@@ -364,17 +368,17 @@ Create CD Job:
 
 ![CD Office 365 Connector config](/images/cd-config2.png)
 
-6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/main`).
+6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to add one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/main`).
 
 ![CD Source Code Management config](/images/cd-config3.png)
 
-7. Change the configurations under the 'Build Environment' section and check 'Provide Node & npm bin/ folder to PATH' and check 'SSH Agent', select 'Specific Credentials' and select the appropriate one for SSH into the EC2 instance.
+7. Change the configurations under the 'Build Environment' section and check 'Provide Node & npm bin/ folder to PATH' and check 'SSH Agent', select 'Specific Credentials' and select the appropriate one for SSH into the EC2 instance (in this case `tech230.pem`). If you do not have the SSH key yet follow the steps [here](#create-a-jenkins-ssh-key) to add one to Jenkins before continuing.
 
 ![CD Source Code Management config](/images/cd-config5.png)
 
 8. Change the configurations under the 'Build' section by clicking on the 'Add build step' drop down and selecting 'Execute shell'. Then add the required commands in the 'Command' box as follows, you must replace `ec2-public-ip` with the actual EC2 instance's public IP address:
 ```shell
-# copies app folder from Jenkins Workspace onto the EC2 instance
+# copies/replaces app folder from Jenkins Workspace onto the EC2 instance
 scp -o "StrictHostKeyChecking=no" -r app ubuntu@ec2-public-ip:/home/ubuntu
 # creates and runs a list of provision commands to deploy the Sparta app
 ssh -o "StrictHostKeyChecking=no" ubuntu@ec2-public-ip <<EOF
