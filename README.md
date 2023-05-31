@@ -130,7 +130,7 @@ Webhook endpoints can be understood as URLs or web addresses that receive data f
 
 You can see the actions taken by the webhooks on GitHub 'Manage webhook', 'Recent Deliveries'.
 
-Follow the steps outlined in step 3 [here](#set-up-jenkins-github-automation-test)
+Follow the steps outlined [here](#create-webhook).
 
 Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
 [Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
@@ -188,6 +188,7 @@ Create a webhook on GitHub:
 ## <a id="create-ci-job">4. Create CI job</a>
 
 Create a project for CI job on Jenkins:
+
 1. Navigate to Jenkins in your web browser and log in.
 
 2. Click on 'New item'. 
@@ -204,9 +205,11 @@ Create a project for CI job on Jenkins:
 
 5. Change the configurations under the 'Office 365 Connector' block and check 'Restrict where this project can be run'. Then add `sparta-ubuntu-node` in the 'Label Expression' box.
 
-6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/main`).
+![Jenkins Office 365 Connector](/images/ci-office-365.png)
+
+6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/dev`).
    
-![Jenkins Source Code Management](/images/Git_SourceCode_ssh.png)
+![Jenkins Source Code Management](/images/updated-ci-source-code-management.png)
    
 7. Change the configurations under the 'Build Triggers' and check 'GitHub hook trigger for GITScm polling'.
 
@@ -228,7 +231,7 @@ This specific testing will run 3 tests. (To check the time your system is runnin
 
 10. Click 'Save' at the bottom of the screen.
 
-11. Run the testing manually by clicking 'Build Now' from the page of your Jenkins project. Alternatively you can push to your GitHub repo and allow your automation webhook to run the tests. This will spin up the necessary EC2 instances to complete the testing and will return the outcomes in the 'Console Output' under your 'Build History' in Jenkins under your project. The Console Output should display the following/similar if it was successful:
+11. Run the testing manually by clicking 'Build Now' from the page of your Jenkins project. Alternatively you can push to your GitHub repo and allow your webhook to automatically run the tests. This will spin up the necessary EC2 instances to complete the testing and will return the outcomes in the 'Console Output' under your 'Build History' in Jenkins under your project. The Console Output should display the following/similar if it was successful:
 
 ![Console Output1](/images/console_output1.png)
 ![Console Output2](/images/console_output2.png)
@@ -237,6 +240,12 @@ This specific testing will run 3 tests. (To check the time your system is runnin
 Note: You can see what resources Jenkins copies over under the project's 'Workspace'.
 
 Additional Note: To check what triggered the build to run if we click 'Polling Log' to see the build log.
+
+12. After setting up your Merge job you need to add the Merge job to this CI job in your 'Post-build Actions' by clicking on the 'Add post-build action' dropdown and selecting 'Build other Projects' and then adding the name of the Merge job in the 'Projects to build' box and ensuring that only 'Trigger only if build is stable' is selected.
+
+![Post Build Automating Merge Job](/images/ci-post-build.png)
+
+13. Save the configurations.
 
 [More documentation on SSH](https://github.com/EstherSlabbert/tech230_github_ssh/blob/main/README.md)
 
@@ -260,21 +269,123 @@ Add an SSH key to Jenkins inside a job:
 
 Create a Merge job on Jenkins:
 
-1. 
+1. Navigate to Jenkins in your web browser and log in.
 
-[Git merge on Jenkins steps](https://andrewtarry.com/posts/jenkins_git_merges/)
+2. Click on 'New item'.
+
+3. Name your job and select which kind you would like it to be. Then click 'OK'.
+
+![Name Merge Job](/images/merge-job1.png)
+
+4. Change the configurations under the 'General' block check 'Discard old builds' and enter `2` for 'Max # of builds to keep'. Then add the GitHub repo (containing the app to be tested) HTTPS url.
+
+![General config Merge](/images/jenkins-ci-merge1.png)
+
+5. Change the configurations under the 'Office 365 Connector' block and check 'Restrict where this project can be run'. Then add `sparta-ubuntu-node` in the 'Label Expression' box.
+
+![Office 365 Connector config Merge](/images/jenkins-ci-merge2.png)
+
+6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/dev`).
+
+![Office 365 Connector config Merge](/images/jenkins-ci-merge3.png)
+
+8. Change the configurations under the 'Build Environment' section and check 'Provide Node & npm bin/ folder to PATH'.
+
+![Build Environment config Merge](/images/jenkins-ci-merge4.png)
+
+9. Save the configurations.
+
+10. After setting up your CD job you need to add the CD job to this Merge job in your 'Post-build Actions' by clicking on the 'Add post-build action' dropdown and selecting 'Build other Projects' and then adding the name of the CD job in the 'Projects to build' box and ensuring that only 'Trigger only if build is stable' is selected.
+
+![Post-build Actions config Merge](/images/jenkins-ci-merge5.png)
+
+11. Save the configurations.
+
+[Link to steps for merge on Jenkins](https://andrewtarry.com/posts/jenkins_git_merges/)
 
 ## <a id="create-ec2-production-environment">6. Create EC2 production environment</a>
 
 Create an EC2 production environment:
 
-1. 
+1. Go to AWS and log in.
+
+2. Create an EC2 instance (`Ubuntu 18.04 LTS` or `Ubuntu 20.04` with `t2.micro` instance type).
+
+Select `tech230` key pair.
+
+Create/select a Security Group with the following permissions:
+- SSH port `22` for Jenkins with 'Jenkins-IP/32' (eg. `3.8.6.44/32`)
+- SSH port `22` for you to access with your IP (Select 'My IP' option)
+- HTTP port `80` for 'Anywhere' to access (i.e. `0.0.0.0/0`)
+- Custom TCP port `3000` for 'Anywhere' to access (i.e. `0.0.0.0/0`)
+
+3. Set up the prerequisites for the Sparta Provisioning App. You can do this one of 3 ways: 1. Use an existing AMI of the App. 2. Use 'User Data'. 3. SSH into the EC2 instance and set it up using the commands manually after launch. See documentation [here](https://github.com/EstherSlabbert/tech230_AWS).
+
+The important commands for setting the app EC2 up without a DB can be found below:
+```
+#!/bin/bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install nginx -y
+
+sudo apt install sed
+sudo sed -i "s/try_files \$uri \$uri\/ =404;/proxy_pass http:\/\/localhost:3000\/;/" /etc/nginx/sites-available/default
+sudo systemctl restart nginx
+
+sudo apt-get install python-software-common
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install nodejs -y
+
+git clone https://github.com/EstherSlabbert/app.git ~/app
+cd ~/app
+npm install
+sudo npm install pm2 -g
+pm2 kill
+pm2 start app.js
+```
+
+4. Review the configurations and 'Launch'.
 
 ## <a id="create-cd-job">7. Create CD Job</a>
 
 Create CD Job:
 
-1. 
+1. Navigate to Jenkins in your web browser and log in.
+
+2. Click on 'New item'.
+
+3. Name your job and select which kind you would like it to be. Then click 'OK'.
+
+4. Change the configurations under the 'General' block check 'Discard old builds' and enter `2` for 'Max # of builds to keep'. Then add the GitHub repo (containing the app to be tested) HTTPS url.
+
+![CD General config](/images/cd-config1.png)
+
+5. Change the configurations under the 'Office 365 Connector' block and check 'Restrict where this project can be run'. Then add `sparta-ubuntu-node` in the 'Label Expression' box.
+
+![CD Office 365 Connector config](/images/cd-config2.png)
+
+6. Change the configurations under the 'Source Code Management' block and select 'Git'. Under the 'Repositories' section add the SSH url from your GitHub repo where it asks for 'Repository URL'. Then where it says credentials click the dropdown and select the appropriate SSH key that you have created/been assigned. If you do not have one yet follow the steps [here](#create-a-jenkins-ssh-key) to create one before continuing. Then change the 'Branches to build' section to have the correct branch name (i.e. `*/main`).
+
+![CD Source Code Management config](/images/cd-config3.png)
+
+7. Change the configurations under the 'Build Environment' section and check 'Provide Node & npm bin/ folder to PATH' and check 'SSH Agent', select 'Specific Credentials' and select the appropriate one for SSH into the EC2 instance.
+
+![CD Source Code Management config](/images/cd-config5.png)
+
+8. Change the configurations under the 'Build' section by clicking on the 'Add build step' drop down and selecting 'Execute shell'. Then add the required commands in the 'Command' box as follows, you must replace `ec2-public-ip` with the actual EC2 instance's public IP address:
+```shell
+# copies app folder from Jenkins Workspace onto the EC2 instance
+scp -o "StrictHostKeyChecking=no" -r app ubuntu@ec2-public-ip:/home/ubuntu
+# creates and runs a list of provision commands to deploy the Sparta app
+ssh -o "StrictHostKeyChecking=no" ubuntu@ec2-public-ip <<EOF
+cd /home/ubuntu/app
+pm2 kill
+pm2 start app.js
+EOF
+```
+![CD Build config](/images/cd-config6.png)
+
+9. Save the configurations.
 
 ## <a id="trigger">8. Trigger</a>
 
@@ -284,7 +395,7 @@ Trigger the Jenkins CICD pipeline:
 
 2. Switch over to your `dev` branch with the command `git checkout dev`. (Your branch may be named something different, replace it with the correct name).
 
-3. Make any change to a file in your repo.
+3. Make any change to a file in your repo. (Note: If you wish to change the message displayed like the provisioning page shown below step 5 you can go into 'app' > 'views' > open 'index.ejs' and change the line containing this: "The app is running correctly." to be "The app is running correctly. - Jenkins". _Be careful not to change anything else so you do not mess up the app's display._)
 
 4. Complete the following commands to update and push the change made:
 ```shell
@@ -294,3 +405,5 @@ git push -u origin dev
 ```
 
 5. This push will trigger the CI job in Jenkins if the webhook is active and in place. If the CI job is successful it will trigger the Merge job, which upon success will trigger the CD job and will have merged the changes made to the dev branch to the main branch. If the CD job is successful and the EC2 instance had all the prerequisites needed installed then, upon success, the Sparta Provisioning App page should be accessible in your web browser through the public IP of your EC2 instance (You may need to add port 3000 to see if the reverse proxy is not set up in your EC2 instance).
+
+![Sparta Provisioning Page](/images/Jenkins-success-app-page.png)
