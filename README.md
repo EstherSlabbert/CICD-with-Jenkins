@@ -224,6 +224,8 @@ Webhooks are commonly used for integrating and automating processes between diff
 
 Webhook endpoints can be understood as URLs or web addresses that receive data from other applications or systems. They act as a destination where data is sent when a specific event or trigger occurs in the sending application.
 
+You can see the actions taken by the webhooks on GitHub 'Manage webhook', 'Recent Deliveries'.
+
 Follow the steps outlined in step 3 [here](#set-up-jenkins-github-automation-test)
 
 Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
