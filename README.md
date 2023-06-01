@@ -235,9 +235,9 @@ This specific testing will run 3 tests. (To check the time your system is runnin
 
 11. Run the testing manually by clicking 'Build Now' from the page of your Jenkins project. Alternatively you can push to your GitHub repo and allow your webhook to automatically run the tests. This will spin up the necessary EC2 instances to complete the testing and will return the outcomes in the 'Console Output' under your 'Build History' in Jenkins under your project. The Console Output should display the following/similar if it was successful:
 
-![Console Output1](/images/console_output1.png)
-![Console Output2](/images/console_output2.png)
-![Console Output3](/images/console_output3.png)
+![Console Output1](/images/ci-console_output1.png)
+![Console Output2](/images/ci-console_output2.png)
+![Console Output3](/images/ci-console_output3.png)
 
 Note: You can see what resources Jenkins copies over under the project's 'Workspace'. And clicking 'Build Now' will manually run any Jenkins job.
 
