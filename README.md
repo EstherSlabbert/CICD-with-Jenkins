@@ -21,6 +21,9 @@
   - [6. Create EC2 production environment](#6-create-ec2-production-environment)
   - [7. Create CD Job](#7-create-cd-job)
   - [8. Trigger](#8-trigger)
+- [Steps to build a Jenkins server](#steps-to-build-a-jenkins-server)
+  - [1. Create EC2](#1-create-ec2)
+  - [2. Set up dependencies required](#2-set-up-dependencies-required)
 
 ### <a id="sdlc-the-software-development-life-cycle">SDLC - The Software Development Life Cycle</a>
 
@@ -134,6 +137,8 @@ Follow the steps outlined [here](#create-webhook).
 
 Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
 [Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
+
+[Smee - proxy payloads from the webhook source](https://smee.io/)
 
 ### <a id="stopping-jenkins-on-aws">Stopping Jenkins on AWS</a>
 
@@ -411,3 +416,96 @@ git push -u origin dev
 5. This push will trigger the CI job in Jenkins if the webhook is active and in place. If the CI job is successful it will trigger the Merge job, which upon success will trigger the CD job and will have merged the changes made to the dev branch to the main branch. If the CD job is successful and the EC2 instance had all the prerequisites needed installed then, upon success, the Sparta Provisioning App page should be accessible in your web browser through the public IP of your EC2 instance (You may need to add port 3000 to see if the reverse proxy is not set up in your EC2 instance).
 
 ![Sparta Provisioning Page](/images/Jenkins-success-app-page.png)
+
+# <a id="steps-to-build-a-jenkins-server">Steps to build a Jenkins server</a>
+
+[Jenkins - Installing Jenkins](https://www.jenkins.io/doc/book/installing/linux/)
+
+[Hashnode - Install Jenkins on AWS](https://hashnode.com/post/installing-jenkins-on-linux-server-using-aws-ec2-ubuntu-1804-second-month-into-the-shecodeafrica-cloud-school-ckuf2qgep01fkvps1bd07fnu5)
+
+[DigitalOcean - How to install Jenkins Ubuntu 18.04 LTS](https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-18-04)
+
+[Hostinger - Install Jenkins](https://www.hostinger.co.uk/tutorials/how-to-install-jenkins-on-ubuntu/)
+
+[DevOps Article - Install Jenkins on AWS EC2](https://devopsarticle.com/how-to-install-jenkins-on-aws-ec2-ubuntu-20-04/)
+
+## <a id="create-ec2">1. Create EC2</a>
+
+Specs:
+Ubuntu 18.04 LTS (used this ami: ami-0a7493ba2bc35c1e9)
+t2.micro
+
+User Data:
+```bash
+#!/bin/bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# install git
+sudo apt-get install git -y
+
+# install nodejs
+sudo apt-get install python-software-common
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install nodejs -y
+```
+
+SG = port 8080, HTTP, SSH
+
+[Jenkins - Webhook Firewalls](https://www.jenkins.io/blog/2019/01/07/webhook-firewalls/)
+
+[GitHub IPs](https://api.github.com/meta)
+
+## <a id="set-up-dependencies-required">2. Set up dependencies required</a>
+
+Install Java:
+
+```bash
+# gets necessary updates
+sudo apt update
+# install java 11
+sudo apt-get install openjdk-11-jdk -y
+# check version to verify installation - expect: openjdk version "11.0.19"
+java -version
+
+# Setup JAVA_HOME and JRE_HOME variables
+#$ cat >> /etc/environment <<EOL
+#JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+#JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+#EOL
+```
+
+Install Jenkins (pust in a 'provision.sh' script and run):
+```bash
+#!/bin/bash
+# add repository key to system
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+# add package repository
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# gets necessary updates
+sudo apt-get update
+
+# installs jenkins with necessary updates
+sudo apt-get install jenkins
+```
+
+Start Jenkins:
+```bash
+# starts Jenkins
+sudo systemctl start jenkins.service
+
+# checks status of Jenkins
+sudo systemctl status jenkins
+
+# get password
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+# check firewall status
+sudo ufw status
+```
+jenkins
