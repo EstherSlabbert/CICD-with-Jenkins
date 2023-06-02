@@ -24,6 +24,10 @@
 - [Steps to build a Jenkins server](#steps-to-build-a-jenkins-server)
   - [1. Create EC2](#1-create-ec2)
   - [2. Set up dependencies required](#2-set-up-dependencies-required)
+- [starts Jenkins](#starts-jenkins)
+- [checks status of Jenkins](#checks-status-of-jenkins)
+- [get password](#get-password)
+- [check firewall status](#check-firewall-status)
 
 ### <a id="sdlc-the-software-development-life-cycle">SDLC - The Software Development Life Cycle</a>
 
@@ -137,6 +141,8 @@ Follow the steps outlined [here](#create-webhook).
 
 Alternatively follow the steps outlined in this link to set up a webhook on GitHub and Jenkins:
 [Blazemeter - Set up a Webhook with GitHub and Jenkins](https://www.blazemeter.com/blog/how-to-integrate-your-github-repository-to-your-jenkins-project)
+
+[Smee - proxy payloads from the webhook source](https://smee.io/)
 
 ### <a id="stopping-jenkins-on-aws">Stopping Jenkins on AWS</a>
 
@@ -499,4 +505,3 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 # check firewall status
 sudo ufw status
-```
