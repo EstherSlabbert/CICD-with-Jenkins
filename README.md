@@ -508,4 +508,4 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 # check firewall status
 sudo ufw status
 ```
-test
+jenkins
