@@ -467,12 +467,6 @@ sudo apt update
 sudo apt-get install openjdk-11-jdk -y
 # check version to verify installation - expect: openjdk version "11.0.19"
 java -version
-
-# Setup JAVA_HOME and JRE_HOME variables
-#$ cat >> /etc/environment <<EOL
-#JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-#JRE_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
-#EOL
 ```
 
 Install Jenkins (pust in a 'provision.sh' script and run):
