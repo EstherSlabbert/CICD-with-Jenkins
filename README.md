@@ -24,6 +24,8 @@
 - [Steps to build a Jenkins server](#steps-to-build-a-jenkins-server)
   - [1. Create EC2](#1-create-ec2)
   - [2. Set up dependencies required](#2-set-up-dependencies-required)
+  - [3. Getting Started](#3-getting-started)
+  - [4. Setting up required](#4-setting-up-required)
 
 ### <a id="sdlc-the-software-development-life-cycle">SDLC - The Software Development Life Cycle</a>
 
@@ -427,7 +429,15 @@ git push -u origin dev
 
 [Hostinger - Install Jenkins](https://www.hostinger.co.uk/tutorials/how-to-install-jenkins-on-ubuntu/)
 
+[GitHub repo](https://github.com/aveshsri2005/install-jenkins-on-aws-ec2)
+
+https://brain2life.hashnode.dev/how-to-add-jenkins-remote-build-agent-based-on-ubuntu-1804
+https://devopscube.com/setup-slaves-on-jenkins-2/
+https://adamtheautomator.com/jenkins-agent/
+
 [DevOps Article - Install Jenkins on AWS EC2](https://devopsarticle.com/how-to-install-jenkins-on-aws-ec2-ubuntu-20-04/)
+
+[Agent node](https://brain2life.hashnode.dev/how-to-add-jenkins-remote-build-agent-based-on-ubuntu-1804)
 
 ## <a id="create-ec2">1. Create EC2</a>
 
@@ -450,7 +460,8 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install nodejs -y
 ```
 
-SG = port 8080, HTTP, SSH
+Security Group rules = Allow needed access to port 8080, HTTP port 80, HTTPS port 443 and SSH port 22.
+<!--- port 1433 for agent node --->
 
 [Jenkins - Webhook Firewalls](https://www.jenkins.io/blog/2019/01/07/webhook-firewalls/)
 
@@ -469,7 +480,7 @@ sudo apt-get install openjdk-11-jdk -y
 java -version
 ```
 
-Install Jenkins (pust in a 'provision.sh' script and run):
+Install Jenkins (put in a 'provision.sh' script and run):
 ```bash
 #!/bin/bash
 # add repository key to system
@@ -500,6 +511,63 @@ sudo systemctl status jenkins
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 # check firewall status
-sudo ufw status
+#sudo ufw status
 ```
-jenkins
+
+![Jenkins Setup](/images/jenkins-github_hook_trigger.png)
+
+## <a id="getting-started">3. Getting Started</a>
+
+1. Go to the Public IP of your EC2 instance in your web browser, then enter your password from using `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`.
+
+![Jenkins Setup Password](/images/jenkins-github_hook_trigger.png)
+
+2. Follow the instructions on-screen to set up (Confirm url, create an Admin user and add additional/needed Plugins).
+
+![URL](/images/url.png)
+
+![Create Admin](/images/create-admin.png)
+
+![Plugins 1](/images/plugins1.png)
+
+![Plugins 2](/images/plugins2.png)
+
+![Plugins 3](/images/plugins3.png)
+
+![Plugins 4](/images/plugins4.png)
+
+![Plugins 5](/images/plugins5.png)
+
+![Plugins 6](/images/plugins6.png)
+
+![Plugins 7](/images/plugins7.png)
+
+![Plugins 8](/images/plugins8.png)
+
+Click install. Wait until complete.
+
+![Plugins installations](/images/installation-plugins.png.png)
+
+Click 'Start using Jenkins'.
+
+![Set up complete](/images/setup-complete.png)
+
+You should be taken to the homepage:
+
+![homepage](/images/start-page.png)
+
+## <a id="getting-started">4. Setting up required</a>
+
+1. Add NodeJS environment. Go to 'Manage Jenkins' > 'Tools' > 'Add NodeJS'. Give a name and select the required version of NodeJS and keep the rest the default settings.
+
+![NodeJS 1](/images/npm-packager.png)
+
+![NodeJS 2](/images/nodejs.png)
+
+2. Allow a connection to GitHub. Go to 'Manage Jenkins' > 'Security' > 'Git Host Key Verification Configuration' and change to 'Accept first connection'.
+
+![Allow git connection](/images/github-allow.png)
+
+3. Create Jenkins Jobs for CI/CD pipeline.
+
+4. Remember to change and activate your webhook on GitHub and to add the neccessary SSH keys to your Jenkins server.
