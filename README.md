@@ -549,7 +549,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 Click install. Wait until complete.
 
-![Plugins installations](/images/installation-plugins.png.png)
+![Plugins installations](/images/installation-plugins.png)
 
 Click 'Start using Jenkins'.
 
