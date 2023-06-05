@@ -130,7 +130,7 @@ Some popular ones include:
 
 A webhook is a mechanism that allows two applications or systems to communicate with each other in a real-time or near real-time manner. It is a way for one application to send a notification or trigger an action in another application when a specific event occurs.
 
-Webhooks are commonly used for integrating and automating processes between different systems or services. Like between GitHub and Jenkins.
+Webhooks are commonly used for integrating and **automating processes between different systems or services**. Like between GitHub and Jenkins. Webhooks are a subset of APIs and are therefore far more limited than APIs—they can only send information. APIs are manual—they need to be asked to pull or modify data. Webhooks automatically send data in response to a specific event, without any request from another software.
 
 Webhook endpoints can be understood as URLs (known as Payload URLs, which are the URL of the server that will receive the webhook POST requests) or web addresses that receive data from other applications or systems. They act as a destination where data is sent when a specific event or trigger occurs in the sending application.
 
@@ -549,7 +549,7 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 Click install. Wait until complete.
 
-![Plugins installations](/images/installation-plugins.png.png)
+![Plugins installations](/images/installation-plugins.png)
 
 Click 'Start using Jenkins'.
 
