@@ -31,7 +31,7 @@
 
 The Software Development Life Cycle (SDLC) consists of several stages or phases that describe the process of software development from conception to deployment and maintenance. There are many different variations. A basic overview includes planning, designing, developing, testing, then deploying. We receive feedback throughout the SDLC to adapt to the changing needs and requirements for a project. 
 
-![Basic SDLC](/images/basic-sdlc.png)
+![Basic SDLC](./images/basic-sdlc.png)
 
 - **Plan**: This phase is used to gather and analyse requirements for the project, then break down the requirements into managable tasks, estimate the effort required and create a schedule.
 - **Design**: This phase is used to create system architecture; design software components or modules; define data structures, algorithms, interfaces, other system specifications; user interface design (optional).
